@@ -4,31 +4,46 @@ import 'package:flutter_application_1/utils/todo.dart';
 import 'package:flutter_application_1/utils/dialogbox.dart';
 
 class Homepage extends StatefulWidget {
-  Homepage({super.key});
+  const Homepage({super.key});
 
   @override
   State<Homepage> createState() => _HomepageState();
 }
 
 class _HomepageState extends State<Homepage> {
-  List task_list = [
-    ["task card 1", false],
-    ["task card 2", false],
-    ["task card 3", true]
-  ];
-
-  void checkboxchanged(bool? value, int index) {
+  void savepress() {
     setState(() {
-      task_list[index][1] = !task_list[index][1];
+      task_list.add([_controller.text, false]);
     });
+    _controller.clear();
+    Navigator.of(context).pop();
   }
+
+  void cancelpress() {
+    Navigator.of(context).pop();
+  }
+
+  final _controller = TextEditingController();
+
+  List task_list = [];
 
   void addcard() {
     showDialog(
         context: context,
         builder: (context) {
-          return dialogBox();
+          return dialogBox(
+            controller_var: _controller,
+            savePress: savepress,
+            cancelPress: cancelpress,
+          );
         });
+  }
+
+  Function(BuildContext)? deleteCard(index) {
+    setState(() {
+      task_list.removeAt(index);
+    });
+    return null;
   }
 
   @override
@@ -44,14 +59,14 @@ class _HomepageState extends State<Homepage> {
         backgroundColor: AppColors.black,
       ),
       floatingActionButton:
-          FloatingActionButton(child: Icon(Icons.add), onPressed: addcard),
+          FloatingActionButton(onPressed: addcard, child: Icon(Icons.add)),
       body: ListView.builder(
-        itemCount: 3,
+        itemCount: task_list.length,
         itemBuilder: (context, index) {
           return TodoCard(
-              taskname: task_list[index][0],
-              ischecked: task_list[index][1],
-              onChanged: (value) => checkboxchanged(value, index));
+            taskname: task_list[index][0],
+            deleteaction: (context) => deleteCard(index),
+          );
         },
       ),
     );
