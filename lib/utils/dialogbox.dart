@@ -11,26 +11,32 @@ class dialogBox extends StatelessWidget {
       required this.controller_var,
       required this.savePress,
       required this.cancelPress});
-
+  Color? buttoncolor1=AppColors.red;
+  Color? buttoncolor2 = AppColors.white;
+  Color? dialogtextcolor = AppColors.white;
+  Color? dialogbackgroundcolor = AppColors.gray;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: AppColors.gray,
+      backgroundColor: dialogbackgroundcolor,
       content: SizedBox(
         height: 120,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             TextField(
+              style: TextStyle(color: dialogtextcolor),
               controller: controller_var,
               decoration: InputDecoration(
-                  border: OutlineInputBorder(), hintText: "Type new task"),
+                  hintText: "Type new task",
+                hintStyle: TextStyle(color: AppColors.palewhite)
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                newButton(buttontitle: "Add", onpressed: savePress),
-                newButton(buttontitle: "Cancel", onpressed: cancelPress)
+                newButton(buttontitle: "Add", onpressed: savePress, buttoncolor: buttoncolor1, textcolor: buttoncolor2,),
+                newButton(buttontitle: "Cancel", onpressed: cancelPress, buttoncolor: buttoncolor2, textcolor: buttoncolor1,)
               ],
             )
           ],
