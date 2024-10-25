@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/utils/colors.dart';
+import 'package:hive/hive.dart';
 
-class fontsSettings extends ChangeNotifier{
-  String selectedFont = 'Roboto'; // Default font`
-  double selectedSize = 24;
+class fontsSettings with ChangeNotifier{
+  final _myBox = Hive.box("tableBox");
+  String selectedFont = Hive.box("tableBox").get("font_family"); // Default :Roboto`
+  double selectedSize = Hive.box("tableBox").get("font_size");//24
   double selectionSize = 6;
   // List of fonts to choose from
 
@@ -18,5 +19,12 @@ class fontsSettings extends ChangeNotifier{
   void setfontfamily(String newfamily){
     selectedFont = newfamily;
     notifyListeners();
+  }
+
+  void updateFsize(newfont){
+    _myBox.put("font_size", newfont);
+  }
+  void updateFfamily(newfamily){
+    _myBox.put("font_family", newfamily);
   }
 }

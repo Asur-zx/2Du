@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/data/database.dart';
+import 'package:flutter_application_1/theme/theme.dart';
 import 'package:flutter_application_1/utils/colors.dart';
 import 'package:flutter_application_1/utils/todo.dart';
 import 'package:flutter_application_1/utils/dialogbox.dart';
@@ -7,7 +8,9 @@ import 'package:hive/hive.dart';
 import 'package:flutter_application_1/utils/menu.dart';
 import 'package:flutter_application_1/utils/fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_application_1/utils/themeprovider.dart';
 
+import '../utils/themeprovider.dart';
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
@@ -19,12 +22,13 @@ class _HomepageState extends State<Homepage> {
 
   final _myBox = Hive.box("tableBox");
   TodoDataBase db = TodoDataBase();
+  themeProvider tp = themeProvider();
 
   @override
   void initState(){
     if (_myBox.get("tasklist")==null){
       db.createInitData();
-    }else{
+    } else{
       db.loadData();
     }
     super.initState();
@@ -56,6 +60,7 @@ class _HomepageState extends State<Homepage> {
           );
         });
   }
+
 
   Future<bool> showSnackbar(BuildContext context) async{
     bool task_changed = true;
@@ -94,13 +99,13 @@ class _HomepageState extends State<Homepage> {
     db.updateData();
   }
 
+
   Widget build(BuildContext context) {
-    double drawerFontSize = fs.selectedSize/1.5;
-    double appbarFontSize = fs.selectedSize/1;
-    return Consumer<fontsSettings>(
-      builder: (context, fontsSettings, child){
+    bool isDark = (Provider.of<themeProvider>(context).themeData==darkMode)?true:false;
+    double drawerFontSize = fs.fontsize/1.5;
+    double appbarFontSize = fs.fontsize/1;
         return Scaffold(
-          backgroundColor: AppColors.black,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           appBar: AppBar(
             title: Text(
               "2do4u",
@@ -111,27 +116,64 @@ class _HomepageState extends State<Homepage> {
             ),
             iconTheme: IconThemeData(color: AppColors.red),
             elevation: 0,
-            backgroundColor: AppColors.black,
           ),
           drawer: Drawer(
-            backgroundColor: AppColors.gray,
+            backgroundColor: Theme.of(context).colorScheme.secondary,
             child: Column(
-              children: [
+              children:[
                 DrawerHeader(
                     child: Icon(
                       Icons.abc,
                       size: 48,
-                      color: AppColors.white,
+                      // color: AppColors.white,
                     )
                 ),
+
                 Menu(drawerFontSize: drawerFontSize,),
-                ListTile(
-                  leading: Icon(Icons.delete, color: AppColors.red,),
-                  title: Text(
-                    "D E L E T E",
-                    style: TextStyle(color: AppColors.red, fontSize: drawerFontSize, fontFamily: fs.selectedFont),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: ListTile(
+                    tileColor: Theme.of(context).colorScheme.secondary,
+                    leading: Icon(Icons.color_lens, color: AppColors.white,),
+                    title: Row(
+                      children: [
+                        Text("Light", style: TextStyle(color: AppColors.white),),
+                        GestureDetector(
+                          onTap: drawerDelete,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Switch(
+                                value: isDark,
+                                activeTrackColor: Theme.of(context).colorScheme.onSecondary,
+                                activeColor: AppColors.black,
+                                inactiveThumbColor: AppColors.white,
+                                inactiveTrackColor: AppColors.gray,
+                                onChanged: (value){
+                                  setState(() {
+                                    isDark = value;
+                                    Provider.of<themeProvider>(context, listen: false).toggleTheme();
+                                  });
+                                },
+                             ),
+                          ),
+                        ),
+                        Text("Dark", style: TextStyle(color: AppColors.white),),
+                    ],
+                    ),
+                    onTap: drawerDelete,
                   ),
-                  onTap: drawerDelete,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  child: ListTile(
+                    tileColor: Theme.of(context).colorScheme.primary,
+                    leading: Icon(Icons.delete, color: AppColors.red,),
+                    title: Text(
+                      "D E L E T E",
+                      style: TextStyle(color: AppColors.red, fontSize: drawerFontSize, fontFamily: fs.selectedFont),
+                    ),
+                    onTap: drawerDelete,
+                  ),
                 ),
               ],
             ),
@@ -142,7 +184,7 @@ class _HomepageState extends State<Homepage> {
             backgroundColor: AppColors.red,
             child: Icon(
               Icons.add,
-              color: AppColors.white,
+              // color: AppColors.white,
             ),
 
           ),
@@ -157,7 +199,5 @@ class _HomepageState extends State<Homepage> {
             },
           ),
         );
-      },
-    );
   }
 }

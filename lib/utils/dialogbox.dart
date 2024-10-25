@@ -14,11 +14,10 @@ class dialogBox extends StatelessWidget {
   Color? buttoncolor1=AppColors.red;
   Color? buttoncolor2 = AppColors.white;
   Color? dialogtextcolor = AppColors.white;
-  Color? dialogbackgroundcolor = AppColors.gray;
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: dialogbackgroundcolor,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       content: SizedBox(
         height: 120,
         child: Column(
