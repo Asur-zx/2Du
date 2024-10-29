@@ -28,7 +28,7 @@ class _SettingsState extends State<Settings> {
             style: TextStyle(
             ),
           ),
-          iconTheme: IconThemeData(color: AppColors.palewhite),
+          iconTheme: IconThemeData(color: AppColors.textColor2),
         ),
         body: ListView(
           children: [

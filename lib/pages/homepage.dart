@@ -6,11 +6,9 @@ import 'package:flutter_application_1/utils/todo.dart';
 import 'package:flutter_application_1/utils/dialogbox.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter_application_1/utils/menu.dart';
-import 'package:flutter_application_1/utils/fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_application_1/utils/themeprovider.dart';
 
-import '../utils/themeprovider.dart';
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
@@ -47,7 +45,7 @@ class _HomepageState extends State<Homepage> {
   }
 
   final _controller = TextEditingController();
-  fontsSettings fs = fontsSettings();
+  // fontsSettings fs = fontsSettings();
 
   void addcard() {
     showDialog(
@@ -63,25 +61,25 @@ class _HomepageState extends State<Homepage> {
 
 
   Future<bool> showSnackbar(BuildContext context) async{
-    bool task_changed = true;
+    bool taskChanged = true;
     final snackbar = SnackBar(content: Text("item deleted !"), action: SnackBarAction(label: "Undo", onPressed: (){
-      task_changed = false;
+      taskChanged = false;
     }),);
 
     ScaffoldMessenger.of(context).showSnackBar(snackbar);
 
     await Future.delayed(Duration(seconds: 3));
 
-    return task_changed;
+    return taskChanged;
   }
 
    Future<void> deleteCard(index, task) async{
     setState(() {
       db.task_list.removeAt(index);
     });
-    bool task_changed = await showSnackbar(context);
+    bool taskChanged = await showSnackbar(context);
 
-    if (task_changed) {
+    if (taskChanged) {
       db.updateData();
     }
     else{
@@ -89,7 +87,7 @@ class _HomepageState extends State<Homepage> {
         db.task_list.insert(index, [task]);
       });
     }
-    return null;
+    return;
   }
 
   void drawerDelete(){
@@ -100,21 +98,22 @@ class _HomepageState extends State<Homepage> {
   }
 
 
+  @override
   Widget build(BuildContext context) {
     bool isDark = (Provider.of<themeProvider>(context).themeData==darkMode)?true:false;
-    double drawerFontSize = fs.fontsize/1.5;
-    double appbarFontSize = fs.fontsize/1;
+    double drawerFontSize = 16;
+    double appbarFontSize = 24;
         return Scaffold(
           backgroundColor: Theme.of(context).colorScheme.primary,
           appBar: AppBar(
             title: Text(
-              "2do4u",
+              "2Du",
               style: TextStyle(
-                color: AppColors.palewhite,
+                color: AppColors.textColor2,
                 fontSize: appbarFontSize,
               ),
             ),
-            iconTheme: IconThemeData(color: AppColors.red),
+            iconTheme: IconThemeData(color: AppColors.mainColor),
             elevation: 0,
           ),
           drawer: Drawer(
@@ -122,22 +121,20 @@ class _HomepageState extends State<Homepage> {
             child: Column(
               children:[
                 DrawerHeader(
-                    child: Icon(
-                      Icons.abc,
-                      size: 48,
-                      // color: AppColors.white,
-                    )
+                    child: Center(child: Text("Hello there,\n Hope this simple todo app came to your rescue\n :D ", textAlign: TextAlign.center,)),
                 ),
-
+        
                 Menu(drawerFontSize: drawerFontSize,),
                 Padding(
                   padding: const EdgeInsets.only(left: 8, right: 8),
                   child: ListTile(
                     tileColor: Theme.of(context).colorScheme.secondary,
-                    leading: Icon(Icons.color_lens, color: AppColors.white,),
+                    leading: Icon(Icons.color_lens, color: AppColors.textColor,),
                     title: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+
                       children: [
-                        Text("Light", style: TextStyle(color: AppColors.white),),
+                        Text("Light", style: TextStyle(color: AppColors.textColor, fontSize: drawerFontSize),),
                         GestureDetector(
                           onTap: drawerDelete,
                           child: Padding(
@@ -145,9 +142,9 @@ class _HomepageState extends State<Homepage> {
                             child: Switch(
                                 value: isDark,
                                 activeTrackColor: Theme.of(context).colorScheme.onSecondary,
-                                activeColor: AppColors.black,
-                                inactiveThumbColor: AppColors.white,
-                                inactiveTrackColor: AppColors.gray,
+                                activeColor: AppColors.primaryColor,
+                                inactiveThumbColor: AppColors.textColor,
+                                inactiveTrackColor: AppColors.secondaryColor,
                                 onChanged: (value){
                                   setState(() {
                                     isDark = value;
@@ -157,7 +154,7 @@ class _HomepageState extends State<Homepage> {
                              ),
                           ),
                         ),
-                        Text("Dark", style: TextStyle(color: AppColors.white),),
+                        Text("Dark", style: TextStyle(color: AppColors.textColor, fontSize: drawerFontSize),),
                     ],
                     ),
                     onTap: drawerDelete,
@@ -167,10 +164,10 @@ class _HomepageState extends State<Homepage> {
                   padding: const EdgeInsets.only(left: 8, right: 8),
                   child: ListTile(
                     tileColor: Theme.of(context).colorScheme.primary,
-                    leading: Icon(Icons.delete, color: AppColors.red,),
+                    leading: Icon(Icons.delete, color: Colors.red,),
                     title: Text(
                       "D E L E T E",
-                      style: TextStyle(color: AppColors.red, fontSize: drawerFontSize, fontFamily: fs.selectedFont),
+                      style: TextStyle(color: Colors.red, fontSize: drawerFontSize, fontFamily: 'Roboto'),
                     ),
                     onTap: drawerDelete,
                   ),
@@ -181,7 +178,7 @@ class _HomepageState extends State<Homepage> {
           floatingActionButton:
           FloatingActionButton(
             onPressed: addcard,
-            backgroundColor: AppColors.red,
+            backgroundColor: AppColors.mainColor,
             child: Icon(
               Icons.add,
               // color: AppColors.white,
