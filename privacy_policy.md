@@ -61,7 +61,7 @@ While using Our Service, We may ask You to provide Us with certain personally id
 
 
 
-
+- Device Storage
 
 
 - Usage Data
