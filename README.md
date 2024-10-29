@@ -1,16 +1,18 @@
-# flutter_application_1
+# 2Du App
 
-A new Flutter project.
+A simple, minimalistic todo application built with Flutter, featuring light and dark themes. Designed to keep your tasks organized and accessible with a clean, intuitive interface.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- **Light and Dark Themes**: Toggle between themes for comfortable viewing.
+- **Add & Manage Todos**: Quickly add, update, or delete tasks.
+- **Simple UI**: Focus on what matters—your tasks.
 
-A few resources to get you started if this is your first Flutter project:
+## Upcoming Features
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- **Custom Color Schemes**: Personalize the app colors to suit your style.
+- **Additional Settings**: More customizable options are on their way.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Privacy Policy
+
+The privacy policy for this application is available in this repository. Please review it to understand how your data is handled.
